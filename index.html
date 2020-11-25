@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>hw09-주소API</title>
+    <link rel="stylesheet" href="css/hw09.css">
+</head>
+<body>
+    <header>
+        <h1 id="title">도로명 주소 검색</h1>
+    </header>
+    <form id="form">
+        <input type="text" name="keyword" id="keyword" placeholder="도로명 입력" class="form-item">
+        <button type="submit" id="form-button" class="form-item">
+            <img src="img/icon1.png" width="20px" margin="5px">
+        </button>
+
+    </form>
+    <ul id="address-list"></ul>
+    <div class="pagination" id="pagination"></div>
+    <script>
+        const API_URL = "https://www.juso.go.kr/addrlink/addrLinkApiJsonp.do";
+        const API_KEY = "devU01TX0FVVEgyMDIwMTEyMTIzNDkxNTExMDQ0OTg=";
+        const form = document.querySelector('#form');
+        const addressList = document.querySelector('#address-list');
+        const pagination = document.querySelector('#pagination');
+
+        let currentPage = 1;
+        let countPerPage = 10;
+
+        form.addEventListener('submit', async e => {
+            e.preventDefault(); //새로고침 방지
+            const keyword = encodeURIComponent(form.keyword.value);
+            console.log(form.keyword.value);
+            try{
+                const response = await search(keyword, currentPage, countPerPage);
+                const txt = await response.text();
+                const results = JSON.parse(txt.replace(/^\(/,'').replace(/\)$/,'')).results;
+                display(results);
+                const totalItems = results.common.totalCount;      
+                displayPagination(totalItems, countPerPage, currentPage, results, keyword);  
+                console.log(results);    
+                form.reset();
+            }catch(e) {
+                console.error(e);
+                console.error("에러입니다.");
+            }
+        });    
+        function search(keyword, currentPage=1, countPerPage=10) {
+            const data = {
+                confmKey: API_KEY,
+                keyword: keyword,
+                currentPage:currentPage,
+                countPerPage: countPerPage,
+                resultType: 'json'
+            };
+            const body = Object.keys(data).map(key => `${key}=${data[key]}`).join('&');
+            console.log(Object.keys(data));
+            console.log(data['confmKey']);
+
+            const options = {
+                method: 'POST',
+                body: body,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                }
+            };
+            console.log(body);
+            return fetch(API_URL, options);
+        }
+
+        function display(results) {
+            addressList.innerHTML = '';
+            results.juso.forEach(item => {
+                const subjects = document.createElement('div');
+
+                const subject1 = document.createElement('div');
+                const sub1Name = document.createElement('span');
+                const sub1Text1 = document.createElement('span');
+                const sub1Text2 = document.createElement('span');
+                sub1Name.innerHTML = `도로명 주소`;
+                sub1Text1.innerHTML = `${item.roadAddr} |`;
+                sub1Text2.innerHTML = `  ${item.zipNo}`;
+
+                subjects.classList.add("subjects");
+                subject1.classList.add("subject1");
+                sub1Name.classList.add("sub1Name");
+                sub1Text2.classList.add("sub1Text2");
+                sub1Text2.style.fontWeight = "bolder";
+
+                subject1.appendChild(sub1Name);
+                subject1.appendChild(sub1Text1);
+                subject1.appendChild(sub1Text2);
+
+
+
+                const subject2 = document.createElement('div');
+                const sub2Name = document.createElement('span');
+                const sub2Text = document.createElement('span');
+                sub2Name.innerHTML = `영문 도로명 주소`;
+                sub2Text.innerHTML = `${item.engAddr}`;
+                subject2.classList.add("subject2");
+                sub2Name.classList.add("sub2Name");
+                sub2Text.classList.add("sub2Text");
+                subject2.appendChild(sub2Name);
+                subject2.appendChild(sub2Text);
+
+                subjects.appendChild(subject1);
+                subjects.appendChild(subject2);
+                addressList.appendChild(subjects);
+
+
+            });
+
+        }
+
+        function displayPagination(totalItems, rows, page, results, keyword) {
+            pagination.innerHTML='';
+
+            const page_count = Math.ceil(totalItems / rows);
+            
+            console.log(Math.ceil(totalItems));
+            for (let i = 1; i < page_count + 1; i++) {
+                const btn = PaginationButton(i, results, keyword);
+                pagination.appendChild(btn);
+            }
+        }         
+        function PaginationButton(page, results, keyword) {
+            const button = document.createElement('button');
+            button.innerText = page;
+            button.classList.add('page-button')
+            if (currentPage == page) button.classList.add('active');
+
+            button.addEventListener('click', () => {
+                currentPage = page;
+                console.log(currentPage);
+                console.log(keyword);
+                search(keyword, currentPage, countPerPage)
+                    .then(res => res.text())
+                    .then(txts => JSON.parse(txts.replace(/^\(/,'').replace(/\)$/,'')).results)
+                    .then(display)
+                    .then(() => form.reset())
+                    .catch( console.log(results.juso));
+            } );
+            return button;
+        }
+
+        const title = document.getElementById('title');
+        title.addEventListener('click', () => {
+            console.log('새로고침');
+            location.reload();
+        })
+
+    </script>
+</body>
+</html>
