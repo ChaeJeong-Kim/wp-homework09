@@ -1,0 +1,98 @@
+*{
+    padding:0;
+    margin:0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+header,#form { 
+    width: 100%;
+    text-align: center;
+}
+
+header {
+    margin: 50px auto;
+    cursor: pointer;
+}
+
+#form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 70px;
+}
+
+.form-item {
+    margin: auto 4px;
+}
+
+#keyword {
+    width: 310px;
+    height: 50px;
+}
+
+#form-button {
+    height: 54px;
+    width: 75px;
+    background-color: rgb(255, 174, 24);
+    border: none;
+    cursor: pointer;
+}
+#form-button:hover {
+    background-color: rgb(247, 160, 0);
+}
+
+#address-list {
+    width: 70%;
+    margin-left: 15vw;
+    /* padding-left: 200px; */
+    font-size:14px;
+}
+
+
+.subjects {
+    margin-bottom: 16px;
+    border-bottom: 3px solid rgb(233, 232, 232);
+    padding:10px 11%;
+    overflow: auto;
+    height: 40px;
+}
+
+.sub1Name {
+    margin-right: 16%;
+    background-color: rgb(253, 246, 228);
+}
+
+.sub2Name {
+    margin-right: 12%;
+    background-color: rgb(231, 238, 252);
+}
+
+.pagination {
+    display: flex;
+    overflow: auto;
+    width: 27.5%;
+    margin: 50px auto;
+}
+
+.page-button {
+    text-align:center;
+    padding-left: 13px; padding-right: 13px;
+    height: 35px;
+    cursor: pointer;
+    background-color: rgb(7, 82, 245);
+    border: 2px solid rgb(59, 60, 75);
+    font-size: 15px;
+    color: white;
+    margin: 2px;
+}
+
+.pagination button:hover {
+    background-color: rgb(40, 25, 126);
+
+}
+
+.pagination button:focus {
+    background-color: rgb(40, 25, 126);
+
+    border: 3px solid black;
+    outline: none;
+}
