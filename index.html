@@ -17,7 +17,26 @@
 
     </form>
     <ul id="address-list"></ul>
+
+    <nav id="hidden-menu" class="hidden">
+        <ul id="hidden-texts">
+            <li class="hidden-text">
+                <span>행정구역코드</span>
+                <span id="hidden-text1">1</span>
+            </li>
+            <li class="hidden-text">
+                <span>지번정보</span>
+                <span id="hidden-text2">2</span>
+            </li>
+            <li class="hidden-text">
+                <span>상세건물명</span>
+                <span id="hidden-text3">3</span>
+            </li>
+        </ul>
+    </nav>
+
     <div class="pagination" id="pagination"></div>
+
     <script>
         const API_URL = "https://www.juso.go.kr/addrlink/addrLinkApiJsonp.do";
         const API_KEY = "devU01TX0FVVEgyMDIwMTEyMTIzNDkxNTExMDQ0OTg=";
@@ -45,7 +64,8 @@
                 console.error(e);
                 console.error("에러입니다.");
             }
-        });    
+        });   
+
         function search(keyword, currentPage=1, countPerPage=10) {
             const data = {
                 confmKey: API_KEY,
@@ -72,46 +92,93 @@
         function display(results) {
             addressList.innerHTML = '';
             results.juso.forEach(item => {
-                const subjects = document.createElement('div');
+                const containSubjects = document.createElement('div'); //검색결과+더보기 부분 포함틀
+                const subjects = document.createElement('div'); //검색결과 부분 포함틀
+                const subject1 = document.createElement('div'); //subjects의 하위요소-한글도로명주소
+                const sub1Name = document.createElement('span'); //subject1 하위요소
+                const sub1Text1 = document.createElement('span'); //subject1 하위요소
+                const sub1Text2 = document.createElement('span'); //subject1 하위요소
+                
+                const subject2 = document.createElement('div'); //subjects의 하위요소-영문 도로명주소
+                const sub2Name = document.createElement('span'); //subject2 하위요소
+                const sub2Text = document.createElement('span'); //subject2 하위요소
 
-                const subject1 = document.createElement('div');
-                const sub1Name = document.createElement('span');
-                const sub1Text1 = document.createElement('span');
-                const sub1Text2 = document.createElement('span');
+                const sub1More = document.createElement('span'); // 더보기(화면의 우측) 부분 포함틀
+                const sub1MoreDiv1 = document.createElement('div'); //더보기 내부 요소1
+                const sub1MoreDiv2 = document.createElement('div'); //더보기 내부 요소2
+
+                //요소에 내용 추가
                 sub1Name.innerHTML = `도로명 주소`;
-                sub1Text1.innerHTML = `${item.roadAddr} |`;
+                sub1Text1.innerHTML = `${item.roadAddr}  |`;
                 sub1Text2.innerHTML = `  ${item.zipNo}`;
 
+                sub2Name.innerHTML = `영문 도로명 주소`;
+                sub2Text.innerHTML = `${item.engAddr}`;
+
+                sub1MoreDiv1.innerHTML = '+';
+                sub1MoreDiv2.innerHTML = '더보기';
+
+                //클래스 추가
+                containSubjects.classList.add("contain-subjects");
                 subjects.classList.add("subjects");
                 subject1.classList.add("subject1");
-                sub1Name.classList.add("sub1Name");
-                sub1Text2.classList.add("sub1Text2");
+                sub1Name.classList.add("sub1-name");
+                sub1Text2.classList.add("sub1-text2");
+
+                subject2.classList.add("subject2");
+                sub2Name.classList.add("sub2-name");
+                sub2Text.classList.add("sub2-text");
+
+                sub1More.classList.add("sub1-more");
+                sub1MoreDiv1.classList.add("sub1-more-div1");
+
+                //요소에 속성 추가
                 sub1Text2.style.fontWeight = "bolder";
 
+                //dom에 요소 추가
                 subject1.appendChild(sub1Name);
                 subject1.appendChild(sub1Text1);
                 subject1.appendChild(sub1Text2);
 
-
-
-                const subject2 = document.createElement('div');
-                const sub2Name = document.createElement('span');
-                const sub2Text = document.createElement('span');
-                sub2Name.innerHTML = `영문 도로명 주소`;
-                sub2Text.innerHTML = `${item.engAddr}`;
-                subject2.classList.add("subject2");
-                sub2Name.classList.add("sub2Name");
-                sub2Text.classList.add("sub2Text");
                 subject2.appendChild(sub2Name);
                 subject2.appendChild(sub2Text);
 
                 subjects.appendChild(subject1);
                 subjects.appendChild(subject2);
-                addressList.appendChild(subjects);
+
+                sub1More.appendChild(sub1MoreDiv1);
+                sub1More.appendChild(sub1MoreDiv2);
+
+                containSubjects.appendChild(subjects);
+                containSubjects.appendChild(sub1More);
+                addressList.appendChild(containSubjects);
 
 
+                //더보기 숨겨진 부분
+                const hiddenText1 = document.getElementById('hidden-text1');
+                const hiddenText2 = document.getElementById('hidden-text2');
+                const hiddenText3= document.getElementById('hidden-text3');
+
+                //더보기 이벤트 추가
+                let hidden = true;
+                const hiddenMenu = document.getElementById('hidden-menu');
+                // const sub1More = document.getElementsByClassName('sub1-more');
+    
+                sub1More.addEventListener('click', () => {
+                    if(hidden) {
+                        hiddenMenu.classList.remove('hidden');
+                        hiddenText1.innerHTML = `${item.admCd}`;
+                        hiddenText2.innerHTML = `${item.jibunAddr}`;
+                        if(item.detBdNmList != 0) {
+                            hiddenText3.innerHTML = `${item.detBdNmList}`;
+                        } else {hiddenText3.innerHTML = `-`;}
+                        hidden = false;
+                    }else {
+                        hiddenMenu.classList.add('hidden');
+                        hidden = true;
+                    }
+                });
             });
-
         }
 
         function displayPagination(totalItems, rows, page, results, keyword) {
@@ -150,6 +217,10 @@
             console.log('새로고침');
             location.reload();
         })
+
+
+
+
 
     </script>
 </body>
