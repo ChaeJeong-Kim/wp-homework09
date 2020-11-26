@@ -162,7 +162,6 @@
                 //더보기 이벤트 추가
                 let hidden = true;
                 const hiddenMenu = document.getElementById('hidden-menu');
-                // const sub1More = document.getElementsByClassName('sub1-more');
     
                 sub1More.addEventListener('click', () => {
                     if(hidden) {
@@ -171,13 +170,18 @@
                         hiddenText2.innerHTML = `${item.jibunAddr}`;
                         if(item.detBdNmList != 0) {
                             hiddenText3.innerHTML = `${item.detBdNmList}`;
-                        } else {hiddenText3.innerHTML = `-`;}
+                        } else {hiddenText3.innerHTML = `-`}
+
                         hidden = false;
+                        sub1More.style.backgroundColor='rgb(133, 133, 133)';
                     }else {
                         hiddenMenu.classList.add('hidden');
                         hidden = true;
+                        sub1More.style.backgroundColor='rgba(6, 15, 24, 0.822)';
                     }
                 });
+
+
             });
         }
 
@@ -217,10 +221,6 @@
             console.log('새로고침');
             location.reload();
         })
-
-
-
-
 
     </script>
 </body>
