@@ -103,7 +103,7 @@
                 const sub2Name = document.createElement('span'); //subject2 하위요소
                 const sub2Text = document.createElement('span'); //subject2 하위요소
 
-                const sub1More = document.createElement('span'); // 더보기(화면의 우측) 부분 포함틀
+                const sub1More = document.createElement('button'); // 더보기(화면의 우측) 부분 포함틀
                 const sub1MoreDiv1 = document.createElement('div'); //더보기 내부 요소1
                 const sub1MoreDiv2 = document.createElement('div'); //더보기 내부 요소2
 
@@ -171,13 +171,10 @@
                         if(item.detBdNmList != 0) {
                             hiddenText3.innerHTML = `${item.detBdNmList}`;
                         } else {hiddenText3.innerHTML = `-`}
-
                         hidden = false;
-                        sub1More.style.backgroundColor='rgb(133, 133, 133)';
                     }else {
                         hiddenMenu.classList.add('hidden');
                         hidden = true;
-                        sub1More.style.backgroundColor='rgba(6, 15, 24, 0.822)';
                     }
                 });
 
@@ -199,8 +196,7 @@
         function PaginationButton(page, results, keyword) {
             const button = document.createElement('button');
             button.innerText = page;
-            button.classList.add('page-button')
-            if (currentPage == page) button.classList.add('active');
+            button.classList.add('page-button');
 
             button.addEventListener('click', () => {
                 currentPage = page;
