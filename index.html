@@ -9,15 +9,19 @@
     <header>
         <h1 id="title">도로명 주소 검색</h1>
     </header>
+
+    <!-- 입력창 -->
     <form id="form">
         <input type="text" name="keyword" id="keyword" placeholder="도로명 입력" class="form-item">
         <button type="submit" id="form-button" class="form-item">
             <img src="img/icon1.png" width="20px" margin="5px">
         </button>
-
     </form>
+
+    <!-- 검색결과 -->
     <ul id="address-list"></ul>
 
+    <!-- 검색결과_더보기메뉴 -->
     <nav id="hidden-menu" class="hidden">
         <ul id="hidden-texts">
             <li class="hidden-text">
@@ -35,7 +39,9 @@
         </ul>
     </nav>
 
+    <!-- 페이지네이션 -->
     <div class="pagination" id="pagination"></div>
+
 
     <script>
         const API_URL = "https://www.juso.go.kr/addrlink/addrLinkApiJsonp.do";
@@ -49,24 +55,22 @@
 
         form.addEventListener('submit', async e => {
             e.preventDefault(); //새로고침 방지
-            const keyword = encodeURIComponent(form.keyword.value);
-            console.log(form.keyword.value);
-            try{
+            const keyword = encodeURIComponent(form.keyword.value); //입력된 값 가져와서 저장함
+            try {
                 const response = await search(keyword, currentPage, countPerPage);
                 const txt = await response.text();
                 const results = JSON.parse(txt.replace(/^\(/,'').replace(/\)$/,'')).results;
+                const totalItems = results.common.totalCount;   //총 데이터 수
+
                 display(results);
-                const totalItems = results.common.totalCount;      
-                displayPagination(totalItems, countPerPage, currentPage, results, keyword);  
-                console.log(results);    
+                displayPagination(totalItems, countPerPage, currentPage, results, keyword);    
                 form.reset();
-            }catch(e) {
-                console.error(e);
-                console.error("에러입니다.");
+            } catch (e) {
+                console.error("에러:::" + e);
             }
         });   
 
-        function search(keyword, currentPage=1, countPerPage=10) {
+        function search(keyword, currentPage, countPerPage) {
             const data = {
                 confmKey: API_KEY,
                 keyword: keyword,
@@ -75,8 +79,6 @@
                 resultType: 'json'
             };
             const body = Object.keys(data).map(key => `${key}=${data[key]}`).join('&');
-            console.log(Object.keys(data));
-            console.log(data['confmKey']);
 
             const options = {
                 method: 'POST',
@@ -85,7 +87,6 @@
                     'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
                 }
             };
-            console.log(body);
             return fetch(API_URL, options);
         }
 
@@ -159,26 +160,25 @@
                 const hiddenText2 = document.getElementById('hidden-text2');
                 const hiddenText3= document.getElementById('hidden-text3');
 
-                //더보기 이벤트 추가
+                //더보기 버튼에 클릭 이벤트 추가_클릭 시 나타나고, 사라짐
                 let hidden = true;
                 const hiddenMenu = document.getElementById('hidden-menu');
     
                 sub1More.addEventListener('click', () => {
-                    if(hidden) {
+                    if (hidden) {
                         hiddenMenu.classList.remove('hidden');
-                        hiddenText1.innerHTML = `${item.admCd}`;
-                        hiddenText2.innerHTML = `${item.jibunAddr}`;
+                        hiddenText1.innerHTML = `${item.admCd}`; //행정구역코드
+                        hiddenText2.innerHTML = `${item.jibunAddr}`; //번지 주소
+                        //상세건물명이 없으면 '-'로 표시되도록 함
                         if(item.detBdNmList != 0) {
-                            hiddenText3.innerHTML = `${item.detBdNmList}`;
+                            hiddenText3.innerHTML = `${item.detBdNmList}`; //상세건물명
                         } else {hiddenText3.innerHTML = `-`}
                         hidden = false;
-                    }else {
+                    } else {
                         hiddenMenu.classList.add('hidden');
                         hidden = true;
                     }
                 });
-
-
             });
         }
 
@@ -187,12 +187,12 @@
 
             const page_count = Math.ceil(totalItems / rows);
             
-            console.log(Math.ceil(totalItems));
-            for (let i = 1; i < page_count + 1; i++) {
-                const btn = PaginationButton(i, results, keyword);
+            for (let page = 1; page < page_count + 1; page++) {
+                const btn = PaginationButton(page, results, keyword);
                 pagination.appendChild(btn);
             }
         }         
+
         function PaginationButton(page, results, keyword) {
             const button = document.createElement('button');
             button.innerText = page;
@@ -200,18 +200,17 @@
 
             button.addEventListener('click', () => {
                 currentPage = page;
-                console.log(currentPage);
-                console.log(keyword);
                 search(keyword, currentPage, countPerPage)
                     .then(res => res.text())
                     .then(txts => JSON.parse(txts.replace(/^\(/,'').replace(/\)$/,'')).results)
                     .then(display)
                     .then(() => form.reset())
-                    .catch( console.log(results.juso));
+                    .catch(err => console.error(err.message));
             } );
             return button;
         }
 
+        //제목을 누르면 새로고침되는 이벤트
         const title = document.getElementById('title');
         title.addEventListener('click', () => {
             console.log('새로고침');
