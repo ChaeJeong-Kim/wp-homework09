@@ -1,7 +1,7 @@
 *{
     padding:0;
     margin:0;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: Tahoma, 'Nanum Gothic Coding', sans-serif, Verdana;
 }
 
 header, #form { 
@@ -14,6 +14,7 @@ header {
     cursor: pointer;
 }
 
+/* 입력창 부분 */
 #form {
     display: flex;
     justify-content: center;
@@ -38,14 +39,24 @@ header {
     border: none;
     cursor: pointer;
 }
+
 #form-button:hover {
     background-color: rgb(247, 160, 0);
 }
 
+
+/* 검색 결과 부분 */
 #address-list {
     width: 70%;
     margin-left: 15vw;
     font-size:14px;
+}
+
+#address-list > div:nth-child(1) {
+    margin-bottom: 20px;
+    text-align: right;
+    font-size: 13pt;
+    color: rgb(43, 43, 43);
 }
 
 .contain-subjects {
@@ -54,33 +65,15 @@ header {
 
 .subjects {
     width:80%;
-    margin-bottom: 16px;
+    margin-bottom: 13px;
     border-bottom: 3px solid rgb(233, 232, 232);
     padding:10px 10%;
     overflow: auto;
     height: 40px;
 }
 
-.sub1-more{
-    background-color: rgba(6, 15, 24, 0.822);
-    border-radius: 3px;
-    height: 44px;
-    width: 44px;
-    margin: 9px 0px;
-    font-size: 5pt;
-    font-weight: bold;
-    text-align: center;
-    color: white;
-    cursor: pointer;
-    border:none;
-}
-.sub1-more:hover {
-    background-color: rgb(133, 133, 133);
-}
-.sub1-more:focus {
-    outline: none;
-    border:none;
-    background-color: rgb(133, 133, 133);
+.subject1 {
+    margin-bottom: 5px;
 }
 
 .sub1-name {
@@ -93,25 +86,50 @@ header {
     background-color: rgb(231, 238, 252);
 }
 
+.sub1-more{
+    width: 44px;
+    height: 44px;
+    background-color: rgba(6, 15, 24, 0.822);
+    border:none;
+    border-radius: 3px;
+    color: white;
+    font-size: 5pt;
+    font-weight: bold;
+    margin: 9px 0px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.sub1-more:hover {
+    background-color: rgb(133, 133, 133);
+}
+
+.sub1-more:focus {
+    outline: none;
+    border:none;
+    background-color: rgb(133, 133, 133);
+}
+
 .sub1-more-div1 {
     padding-top: 0;
     font-size: 15pt;
     font-weight: lighter;
 }
 
+/* 검색 결과_더보기 메뉴CSS */
 #hidden-menu {
     position: fixed;
     top: 48%;
     right: 18%;
+    width: 580px;
+    height: 120px;
     background-color: rgb(255, 255, 255);
     color: rgb(0, 0, 0);
     border-top: 12px solid  rgb(187, 207, 247);
     box-shadow: -1px 2px 6px black;
-    width: 580px;
-    height: 120px;
     padding: 10px 20px;
-    transition-duration: 500ms;
     overflow: auto;
+    transition-duration: 400ms;
 }
 
 #hidden-menu.hidden {
@@ -137,32 +155,34 @@ header {
     padding-bottom: 20px;
 }
 
+/* 검색결과_페이지네이션 */
 .pagination {
     display: flex;
+    justify-content: start;
     overflow: auto;
-    width: 27.5%;
+    width: 350px;
     margin: 50px auto;
+    background-color: rgb(238, 238, 238);
 }
 
 .page-button {
     text-align:center;
     padding-left: 13px; padding-right: 13px;
+    margin: 2px;
     height: 35px;
     cursor: pointer;
-    background-color: rgb(88, 88, 124);
-    border: 2px solid rgb(51, 51, 51);
     font-size: 15px;
+    background-color: rgb(85, 95, 126);
+    border: 2px solid rgb(51, 51, 51);
     color: white;
-    margin: 2px;
 }
 
 .pagination button:hover {
-    background-color:rgb(52, 30, 177);
-
+    background-color:rgb(43, 32, 187);
 }
 
 .pagination button:focus {
-    background-color: rgb(52, 30, 177);
+    background-color: rgb(43, 32, 187);
     border: 3px solid black;
     outline: none;
 }

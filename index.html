@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>hw09-주소API</title>
     <link rel="stylesheet" href="css/hw09.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -92,6 +94,10 @@
 
         function display(results) {
             addressList.innerHTML = '';
+            const totalCount = document.createElement('div');
+            totalCount.innerHTML=`* 총 검색 결과 수는 ${results.common.totalCount}개 입니다.`;
+            addressList.appendChild(totalCount);
+
             results.juso.forEach(item => {
                 const containSubjects = document.createElement('div'); //검색결과+더보기 부분 포함틀
                 const subjects = document.createElement('div'); //검색결과 부분 포함틀
