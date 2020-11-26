@@ -69,11 +69,11 @@ header {
     border-bottom: 3px solid rgb(233, 232, 232);
     padding:10px 10%;
     overflow: auto;
-    height: 40px;
+    height: 45px;
 }
 
 .subject1 {
-    margin-bottom: 5px;
+    margin-bottom: 8px;
 }
 
 .sub1-name {
@@ -119,10 +119,10 @@ header {
 /* 검색 결과_더보기 메뉴CSS */
 #hidden-menu {
     position: fixed;
-    top: 48%;
+    top: 50%;
     right: 18%;
-    width: 580px;
-    height: 120px;
+    width: 560px;
+    height: 150px;
     background-color: rgb(255, 255, 255);
     color: rgb(0, 0, 0);
     border-top: 12px solid  rgb(187, 207, 247);
@@ -153,6 +153,10 @@ header {
     left: 150px;
     margin-right: 20px;
     padding-bottom: 20px;
+}
+
+#hidden-text0 {
+    font-weight: bold;
 }
 
 /* 검색결과_페이지네이션 */
