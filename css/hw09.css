@@ -17,6 +17,7 @@ header {
 #form {
     display: flex;
     justify-content: center;
+    margin-left: 15px;
     margin-bottom: 70px;
 }
 
@@ -27,6 +28,7 @@ header {
 #keyword {
     width: 310px;
     height: 50px;
+    padding-left: 15px;
 }
 
 #form-button {
@@ -73,7 +75,6 @@ header {
     padding: 3px;
     cursor: pointer;
 }
-
 .sub1-more:hover {
     background-color: rgb(133, 133, 133);
 }
@@ -101,7 +102,6 @@ header {
     background-color: rgb(255, 255, 255);
     color: rgb(0, 0, 0);
     border-top: 12px solid  rgb(187, 207, 247);
-    /* border-radius: 1px; */
     box-shadow: -1px 2px 6px black;
     width: 580px;
     height: 120px;
@@ -120,7 +120,6 @@ header {
 
 .hidden-text {
     margin: 12px;
-    /* border-bottom: 1px solid rgb(187, 187, 187); */
 }
 
 .hidden-text > span:nth-child(1) {
