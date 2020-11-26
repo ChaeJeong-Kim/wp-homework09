@@ -198,14 +198,30 @@
             button.innerText = page;
             button.classList.add('page-button');
 
+            //페이지 버튼 누를 때, 그에 맞는 내용으로 바뀌도록 이벤트 설정
             button.addEventListener('click', () => {
                 currentPage = page;
-                search(keyword, currentPage, countPerPage)
-                    .then(res => res.text())
-                    .then(txts => JSON.parse(txts.replace(/^\(/,'').replace(/\)$/,'')).results)
-                    .then(display)
-                    .then(() => form.reset())
-                    .catch(err => console.error(err.message));
+
+                // search(keyword, currentPage, countPerPage)
+                //     .then(res => res.text())
+                //     .then(txts => JSON.parse(txts.replace(/^\(/,'').replace(/\)$/,'')).results)
+                //     .then(display)
+                //     .then(() => form.reset())
+                //     .catch(err => console.error(err.message));
+
+                async function contentPerPage() {
+                    try{
+                        const res = await search(keyword, currentPage, countPerPage);
+                        const txt = await res.text();
+                        const result = JSON.parse(txt.replace(/^\(/,'').replace(/\)$/,'')).results
+                        display(result);
+                        form.reset();
+                    } catch (err) {
+                        console.error(err.message);
+                    }
+                }
+                contentPerPage();
+                
             } );
             return button;
         }
