@@ -19,25 +19,25 @@
 ## HTML 주요 코드 설명
 HTML의 구조는 크게 header태그, form태그, ul태그, nav태그, div태그로 이루어져 있습니다.
 
-### 1. header태그
+#### 1. header태그
 - 제목이 입력된 h1태그 포함
      ```html
     <h1 id="title">도로명 주소 검색</h1>
      ```
     
-### 2. form태그
+#### 2. form태그
 - 도로명 입력란과 제출 버튼        
     ```html
     <input type="text" placeholder="도로명 입력" class="form-item">
     <button type="submit"></button>
     ```
-### 3. ul태그 
+#### 3. ul태그 
 - 검색된 주소가 ul태그의 자식 요소로 추가됩니다.
     ```html
     <ul id="address-list"></ul>
     ```
 
-### 4. nav태그
+#### 4. nav태그
 - 검색 결과에서 더보기 메뉴 부분을 나타냅니다. ul태그는 4개의 li태그로 구성되어 있고, 검색 결과의 한 항목마다 아래 두번째 span에 내용이 추가됩니다.
     ```html
     <ul id="hidden-texts">
@@ -51,7 +51,7 @@ HTML의 구조는 크게 header태그, form태그, ul태그, nav태그, div태�
     </ul>
     ```
 
-### 5. div태그
+#### 5. div태그
 - 검색된 결과의 하단에 위치한 페이지네이션 부분입니다. 검색된 결과의 데이터 수에 따라 아래 div태그의 자식요소로 button태그가 추가됩니다.
     ```html
     <div class="pagination" id="pagination"></div>
