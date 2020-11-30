@@ -55,17 +55,19 @@
         const form = document.querySelector('#form');
         const addressList = document.querySelector('#address-list');
         const pagination = document.querySelector('#pagination');
+        const inputText = document.querySelector('#keyword');
 
         let currentPage = 1;
         let countPerPage = 10;
 
         form.addEventListener('submit', async e => {
             e.preventDefault(); //새로고침 방지
+            currentPage = 1;
             const keyword = encodeURIComponent(form.keyword.value); //입력된 값 가져와서 저장함
             try {
                 const response = await search(keyword, currentPage, countPerPage);
                 const txt = await response.text();
-                const results = JSON.parse(txt.replace(/^\(/,'').replace(/\)$/,'')).results;
+                const results = await JSON.parse(txt.replace(/^\(/,'').replace(/\)$/,'')).results;
                 const totalItems = results.common.totalCount;   //총 데이터 수
 
                 display(results);
@@ -99,7 +101,7 @@
         function display(results) {
             addressList.innerHTML = '';
             const totalCount = document.createElement('div');
-            totalCount.innerHTML=`* 총 검색 결과 수는 ${results.common.totalCount}개 입니다.`;
+            totalCount.innerHTML=`* 검색어 [${form.keyword.value}]에 대한 총 검색 결과 수는 ${results.common.totalCount}개 입니다.`;
             addressList.appendChild(totalCount);
 
             results.juso.forEach(item => {
@@ -145,6 +147,7 @@
 
                 //요소에 속성 추가
                 sub1Text2.style.fontWeight = "bolder";
+                inputText.setAttribute('value', `${form.keyword.value}`) ;
 
                 //dom에 요소 추가
                 subject1.appendChild(sub1Name);
@@ -225,7 +228,7 @@
                     try{
                         const res = await search(keyword, currentPage, countPerPage);
                         const txt = await res.text();
-                        const result = JSON.parse(txt.replace(/^\(/,'').replace(/\)$/,'')).results
+                        const result = await JSON.parse(txt.replace(/^\(/,'').replace(/\)$/,'')).results
                         display(result);
                         form.reset();
                     } catch (err) {
